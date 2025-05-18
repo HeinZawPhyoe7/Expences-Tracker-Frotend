@@ -1,12 +1,10 @@
-import Home from "@/components/home/Home";
+import Register from "@/components/auth/Register";
 import React from "react";
 
 const Page = () => {
   return (
     <div>
-      <div>
-        <Home />
-      </div>
+      <Register />
     </div>
   );
 };
