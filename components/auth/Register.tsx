@@ -1,6 +1,8 @@
 "use client";
 
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Register = () => {
@@ -8,6 +10,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpass, setComfirmpass] = useState("");
+
+  const router = useRouter();
 
   const handleNameChange = (e: any) => {
     setName(e.target.value);
@@ -38,6 +42,7 @@ const Register = () => {
       );
 
       console.log("Register successful:", response.data);
+      router.push("/home");
       return response.data;
     } catch (error) {
       console.error("Register failed:", error);
@@ -85,15 +90,15 @@ const Register = () => {
             Register
           </button>
         </div>
-        <div
-          onClick={handleRegister}
-          className="text-xl font-bold font-serif mb-2"
-        >
+        <div className="text-xl font-bold font-serif mb-2">
           Sign In To Your Account?
         </div>
-        <a href="" className="text-xl text-sky-400 font-bold font-serif mb-4">
+        <Link
+          href="/login"
+          className="text-xl text-sky-400 font-bold font-serif mb-4"
+        >
           Sign In
-        </a>
+        </Link>
       </div>
     </div>
   );
