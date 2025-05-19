@@ -1,10 +1,10 @@
-import Home from "@/components/home/Home";
+import Home from "@/components/elements/Home";
 import React from "react";
 
 const page = () => {
   return (
-    <div>
-      <div>
+    <div className="bg-[#1a1a2e]">
+      <div className="">
         <Home />
       </div>
     </div>
