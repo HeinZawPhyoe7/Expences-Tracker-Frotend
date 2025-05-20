@@ -42,7 +42,7 @@ const Register = () => {
       );
 
       console.log("Register successful:", response.data);
-      router.push("/home");
+      router.push("/login");
       return response.data;
     } catch (error) {
       console.error("Register failed:", error);

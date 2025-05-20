@@ -1,12 +1,13 @@
 "use client";
 
 import { ArrowBigDown, ArrowBigUp, Plus } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addDays, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import dayjs from "dayjs";
 import {
   Popover,
   PopoverContent,
@@ -31,12 +32,20 @@ import Navbar from "../elements/Navbar";
 import axios from "axios";
 
 const Home = () => {
+  type ExpenseItem = {
+    id: number;
+    expense_category: string;
+    description: string;
+    amount: number;
+    date: string;
+  };
   const [type, setType] = useState("");
   const [wallet, setWallet] = useState("");
   const [category, setCategory] = useState("");
   const [date, setDate] = React.useState<Date>();
   const [amount, setAmount] = useState("");
   const [desc, setDesc] = useState("");
+  const [expense, setExpense] = useState<ExpenseItem[]>([]);
 
   const handleTypeChange = (value: any) => {
     setType(value);
@@ -124,17 +133,57 @@ const Home = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          console.error("No access token found");
+          return;
+        }
+
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/expense/getall`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setExpense(response.data.expense);
+      } catch (error) {
+        console.error("Error fetching expenses:", error);
+      }
+    };
+
+    fetchExpenses();
+  }, []);
+
   const handleCreate = async () => {
     try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.error("No access token found");
+        return;
+      }
+
+      const formattedDate = dayjs(date).format("YYYY-MM-DD");
+
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/expense/store`,
         {
-          type: type,
-          wallet: wallet,
+          type,
+          wallet,
           expense_category: category,
-          date: date,
-          amount: amount,
+          date: formattedDate,
+          amount,
           description: desc,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -179,23 +228,28 @@ const Home = () => {
           <h2 className="font-serif font-bold text-2xl mb-4 text-white">
             Recent Transactions
           </h2>
-          <div className="grid grid-cols-5 text-white bg-violet-600 rounded-xl">
-            <div className="col-span-4 p-2">
-              <div className="flex justify-start gap-2 items-center">
-                <div className="">Image</div>
-                <div className=" flex flex-col justify-start items-center">
-                  <h3>Health</h3>
-                  <p>checkup fee</p>
+          {expense.map((item, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-5 text-white bg-violet-600 rounded-xl mb-5"
+            >
+              <div className="col-span-4 p-2">
+                <div className="flex justify-start gap-2 items-center">
+                  <div className="">Image</div>
+                  <div className=" flex flex-col justify-start items-center">
+                    <h3>{item.expense_category}</h3>
+                    <p>{item.description}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-span-1 p-2">
+                <div className="flex flex-col justify-end items-center text-center">
+                  <div>-${item.amount}</div>
+                  <div>{dayjs(item.date).format("DD MMM")}</div>
                 </div>
               </div>
             </div>
-            <div className="col-span-1 p-2">
-              <div className="flex flex-col justify-end items-center text-center">
-                <div>-$30</div>
-                <div>26May</div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
         <div className="">
           <Dialog>
