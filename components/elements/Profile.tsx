@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BurmeseCat from "@/public/cat-2.jpeg";
 import Image from "next/image";
 import Navbar from "./Navbar";
@@ -15,8 +15,36 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import axios from "axios";
 
 const Profile = () => {
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          console.error("No access token found");
+          return;
+        }
+
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching expenses:", error);
+      }
+    };
+
+    fetchExpenses();
+  }, []);
   return (
     <div className="w-[450px] mx-auto mt-8 bg-[#10002b] h-[1000px]">
       <div>
@@ -28,10 +56,10 @@ const Profile = () => {
             alt="img"
           />
           <h2 className="font-bold font-serif text-3xl text-white">
-            Burmese Cat
+            {user?.name}
           </h2>
           <p className="text-xl text-muted-foreground font-serif">
-            cat222@gmail.com
+            {user?.email}
           </p>
         </div>
         <div className="flex justify-center items-center mt-4">
