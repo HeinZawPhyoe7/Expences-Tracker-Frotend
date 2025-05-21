@@ -46,6 +46,9 @@ const Home = () => {
   const [amount, setAmount] = useState("");
   const [desc, setDesc] = useState("");
   const [expense, setExpense] = useState<ExpenseItem[]>([]);
+  const [myIncome, setMyIncome] = useState([]);
+  const [myExpense, setMyExpense] = useState([]);
+  const [myBalance, setMyBalance] = useState([]);
 
   const handleTypeChange = (value: any) => {
     setType(value);
@@ -152,6 +155,9 @@ const Home = () => {
         );
 
         setExpense(response.data.expense);
+        setMyIncome(response.data.total_income);
+        setMyExpense(response.data.total_expense);
+        setMyBalance(response.data.total_balance);
       } catch (error) {
         console.error("Error fetching expenses:", error);
       }
@@ -201,7 +207,7 @@ const Home = () => {
         <div className="rounded-2xl p-4 shadow-md mb-4 bg-[#f8fdfc]">
           <div className="mb-4">
             <h3 className="font-serif">Total Balance</h3>
-            <span className="font-bold text-xl font-serif">$ 79099.00</span>
+            <span className="font-bold text-xl font-serif">$ {myBalance}</span>
           </div>
           <div className="grid grid-cols-2">
             <div className="col-span-1">
@@ -211,7 +217,7 @@ const Home = () => {
                 </div>
                 <span className="font-serif">Income</span>
               </div>
-              <p className="text-[#70e000] font-serif">$ 23453456.00</p>
+              <p className="text-green-500 font-serif">$ {myIncome}</p>
             </div>
             <div className="col-span-1">
               <div className="flex justify-end items-center relative gap-2">
@@ -220,7 +226,9 @@ const Home = () => {
                 </div>
                 <span className="font-serif">Expense</span>
               </div>
-              <p className="text-[#e01e37] text-end font-serif">$ 242343.00</p>
+              <p className="text-[#e01e37] text-end font-serif">
+                $ {myExpense}
+              </p>
             </div>
           </div>
         </div>
