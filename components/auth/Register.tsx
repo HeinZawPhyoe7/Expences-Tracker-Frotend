@@ -49,53 +49,53 @@ const Register = () => {
     }
   };
   return (
-    <div className="mt-12">
-      <div className="flex justify-center flex-col items-center">
-        <h3 className="text-3xl font-bold font-serif mb-4">Register</h3>
-        <div className="flex justify-center flex-col items-center">
+    <div className="flex justify-center items-center flex-col text-white">
+      <div className="flex justify-center flex-col items-center gap-y-4">
+        <h3 className="text-3xl font-bold font-serif">Register</h3>
+        <div className="flex justify-center flex-col items-center gap-y-4">
           <input
             id="name"
             type="name"
             onChange={handleNameChange}
-            className="p-2 border rounded-md shadow-md mb-3 w-64"
+            className="p-2 border rounded-md shadow-md w-64"
             placeholder="Name"
           />
           <input
             id="email"
             type="email"
             onChange={handleEmailChange}
-            className="p-2 border rounded-md shadow-md mb-3 w-64"
+            className="p-2 border rounded-md shadow-md w-64"
             placeholder="Email"
           />
           <input
             id="password"
             type="password"
             onChange={handlePasswordChange}
-            className="p-2 border rounded-md shadow-md mb-4 w-64"
+            className="p-2 border rounded-md shadow-md  w-64"
             placeholder="Password"
           />
           <input
             id="confirm_password"
             type="password"
             onChange={handleConfirmPasswordChange}
-            className="p-2 border rounded-md shadow-md mb-4 w-64"
+            className="p-2 border rounded-md shadow-md w-64"
             placeholder="Confirm Password"
           />
         </div>
-        <div className="mb-4">
+        <div className="pb-4">
           <button
             onClick={handleRegister}
-            className="bg-blue-500 w-32 cursor-pointer rounded-md py-2 text-white "
+            className="bg-blue-500 w-32 cursor-pointer rounded-md p-2 border border-blue-400 text-white "
           >
             Register
           </button>
         </div>
-        <div className="text-xl font-bold font-serif mb-2">
+        <div className="text-xl font-bold font-serif">
           Sign In To Your Account?
         </div>
         <Link
           href="/login"
-          className="text-xl text-sky-400 font-bold font-serif mb-4"
+          className="text-xl text-sky-400 cursor-pointer font-bold font-serif"
         >
           Sign In
         </Link>

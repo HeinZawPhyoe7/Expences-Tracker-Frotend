@@ -74,7 +74,7 @@ const Profile = () => {
     }
   };
   return (
-    <div className="w-[450px] mx-auto mt-8 bg-[#10002b] h-[1000px]">
+    <div className="mx-auto py-4 bg-[#10002b] min-h-screen">
       <div>
         <div className="flex flex-col justify-center items-center">
           <h2 className="font-bold font-serif text-3xl text-white">Profile</h2>
@@ -135,7 +135,6 @@ const Profile = () => {
           </button>
         </div>
       </div>
-      <Navbar />
     </div>
   );
 };

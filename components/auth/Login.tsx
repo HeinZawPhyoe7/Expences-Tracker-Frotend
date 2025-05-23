@@ -40,32 +40,32 @@ const Login = () => {
   };
 
   return (
-    <div className="mt-12">
-      <div className="flex justify-center flex-col items-center">
+    <div className="flex justify-center items-center flex-col text-white">
+      <div className="flex justify-center flex-col items-center gap-y-4">
         <h3 className="text-3xl font-bold font-serif">Hey,</h3>
-        <h3 className="text-3xl font-bold font-serif mb-4">Welcom Back</h3>
-        <div className="text-3xl font-bold font-serif mb-4">
-          Login TO Your Account
+        <h3 className="text-3xl font-bold font-serif ">Welcom Back</h3>
+        <div className="text-3xl font-bold font-serif ">
+          Login To Your Account
         </div>
-        <div className="flex justify-center flex-col items-center">
+        <div className="flex justify-center flex-col items-center w-full">
           <input
             id="email"
             type="email"
             onChange={handleEmailChange}
-            className="p-2 border rounded-md shadow-md mb-3 w-64"
+            className="p-2 border rounded-md shadow-md mb-3 w-full"
             placeholder="example@gmail.com"
           />
           <input
             id="password"
             type="password"
             onChange={handlePasswordChange}
-            className="p-2 border rounded-md shadow-md w-64"
+            className="p-2 border rounded-md shadow-md w-full"
             placeholder="password"
           />
 
           <button
             onClick={handleLogin}
-            className="mt-4 bg-blue-400 text-white rounded-lg p-2 w-20 cursor-pointer"
+            className="mt-4 bg-blue-400 text-white rounded-lg p-2  w-full cursor-pointer"
           >
             Login
           </button>

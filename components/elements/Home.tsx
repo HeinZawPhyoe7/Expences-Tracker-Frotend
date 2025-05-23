@@ -194,24 +194,25 @@ const Home = () => {
       );
 
       console.log("Expense Created Successsful", response.data);
+      window.location.reload();
       return response.data;
     } catch (error) {
       console.error("Expense Failed");
     }
   };
   return (
-    <div className="w-[350px] mx-auto mt-8 bg-[#1a1a2e] h-[1000px]">
+    <div className="mx-auto pt-8 bg-[#10002b] min-h-screen">
       <div className="">
         <h2 className="font-serif text-xl opacity-70 text-white">Hello,</h2>
-        <h1 className="font-serif font-bold text-2xl mb-4 text-white">Hein</h1>
-        <div className="rounded-2xl p-4 shadow-md mb-4 bg-[#f8fdfc]">
-          <div className="mb-4">
+        <h1 className="font-serif font-bold text-2xl pb-4 text-white">Hein</h1>
+        <div className="rounded-2xl p-4 shadow-md pb-4 bg-[#f8fdfc]">
+          <div className="pb-4">
             <h3 className="font-serif">Total Balance</h3>
             <span className="font-bold text-xl font-serif">$ {myBalance}</span>
           </div>
           <div className="grid grid-cols-2">
             <div className="col-span-1">
-              <div className="flex justify-start items-center relative gap-2">
+              <div className="flex justify-start items-center gap-2">
                 <div className="bg-gray-200 rounded-full">
                   <ArrowBigUp />
                 </div>
@@ -220,7 +221,7 @@ const Home = () => {
               <p className="text-green-500 font-serif">$ {myIncome}</p>
             </div>
             <div className="col-span-1">
-              <div className="flex justify-end items-center relative gap-2">
+              <div className="flex justify-end items-center gap-2">
                 <div className="bg-gray-200 rounded-full">
                   <ArrowBigDown />
                 </div>
@@ -233,47 +234,49 @@ const Home = () => {
           </div>
         </div>
         <div>
-          <h2 className="font-serif font-bold text-2xl mb-4 text-white">
+          <h2 className="font-serif font-bold text-2xl py-4 text-white">
             Recent Transactions
           </h2>
-          {expense.map((item, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-5 text-white bg-violet-600 rounded-xl mb-5"
-            >
-              <div className="col-span-4 p-2">
-                <div className="flex justify-start gap-2 items-center">
-                  <div className="">Image</div>
-                  <div className=" flex flex-col justify-start items-center">
-                    <h3>{item.expense_category}</h3>
-                    <p>{item.description}</p>
+          <div className="space-y-4">
+            {expense.map((item, index) => (
+              <div
+                key={index}
+                className="grid grid-cols-4 text-white p-2 bg-violet-600 rounded-xl"
+              >
+                <div className="col-span-3 p-2">
+                  <div className="flex justify-start gap-2 items-center">
+                    <div className="">Image</div>
+                    <div className=" flex flex-col justify-start items-center">
+                      <h3>{item.expense_category}</h3>
+                      <p>{item.description}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-1 p-2">
+                  <div className="flex flex-col justify-end items-center text-center">
+                    <div>${item.amount}</div>
+                    <div>{dayjs(item.date).format("DD MMM")}</div>
                   </div>
                 </div>
               </div>
-              <div className="col-span-1 p-2">
-                <div className="flex flex-col justify-end items-center text-center">
-                  <div>-${item.amount}</div>
-                  <div>{dayjs(item.date).format("DD MMM")}</div>
-                </div>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         <div className="">
           <Dialog>
             <DialogTrigger>
-              <div className="flex justify-end items-center bg-green-300 absolute bottom-10 border border-green-300 rounded-full right-10 p-2">
+              <div className="bg-green-300 fixed bottom-24 border border-green-300 rounded-full right-10 p-2">
                 <Plus />
               </div>
             </DialogTrigger>
-            <DialogContent className="w-full space-y-2 bg-amber-600">
+            <DialogContent className="w-92 space-y-2">
               <DialogHeader>
                 <DialogTitle className="text-2xl font-bold font-serif">
                   Add Transaction
                 </DialogTitle>
               </DialogHeader>
               <div className="flex flex-col justify-start items-start">
-                <label htmlFor="" className="text-xl font-serif font-bold mb-2">
+                <label htmlFor="" className="text-xl font-serif font-bold pb-2">
                   Type
                 </label>
                 <Select onValueChange={handleTypeChange}>
@@ -292,7 +295,7 @@ const Home = () => {
               </div>
 
               <div className="flex flex-col justify-start items-start">
-                <label htmlFor="" className="text-xl font-serif font-bold mb-2">
+                <label htmlFor="" className="text-xl font-serif font-bold pb-2">
                   Wallet
                 </label>
                 <Select onValueChange={handleWalletChange}>
@@ -312,7 +315,7 @@ const Home = () => {
               </div>
 
               <div className="flex flex-col justify-start items-start">
-                <label htmlFor="" className="text-xl font-serif font-bold mb-2">
+                <label htmlFor="" className="text-xl font-serif font-bold pb-2">
                   Expense Category
                 </label>
                 <Select onValueChange={handleCategoryChange}>
@@ -331,7 +334,7 @@ const Home = () => {
                 </Select>
               </div>
               <div className="flex flex-col justify-start items-start">
-                <label htmlFor="" className="text-xl font-serif font-bold mb-2">
+                <label htmlFor="" className="text-xl font-serif font-bold pb-2">
                   Date
                 </label>
                 <div>
@@ -379,7 +382,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="flex flex-col justify-start items-start">
-                <label htmlFor="" className="text-xl font-serif font-bold mb-2">
+                <label htmlFor="" className="text-xl font-serif font-bold pb-2">
                   Amount
                 </label>
                 <input
@@ -390,7 +393,7 @@ const Home = () => {
                 />
               </div>
               <div className="flex flex-col justify-start items-start">
-                <label htmlFor="" className="text-xl font-serif font-bold mb-2">
+                <label htmlFor="" className="text-xl font-serif font-bold pb-2">
                   Description
                 </label>
                 <textarea
@@ -403,7 +406,7 @@ const Home = () => {
                 <button
                   type="submit"
                   onClick={handleCreate}
-                  className="w-full bg-green-300 rounded-xl p-2"
+                  className="w-full bg-green-800 cursor-pointer text-white rounded-xl p-2"
                 >
                   Submit
                 </button>
@@ -411,9 +414,6 @@ const Home = () => {
             </DialogContent>
           </Dialog>
         </div>
-      </div>
-      <div className="">
-        <Navbar />
       </div>
     </div>
   );
