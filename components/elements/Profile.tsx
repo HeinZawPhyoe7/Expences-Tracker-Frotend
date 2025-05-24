@@ -17,11 +17,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import axios from "axios";
-import { LogOut, UserRoundPen } from "lucide-react";
+import { LogOut, SquarePen, UserRoundPen } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const Profile = () => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>();
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const router = useRouter();
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -77,23 +78,28 @@ const Profile = () => {
     <div className="mx-auto py-4 bg-[#10002b] min-h-screen">
       <div>
         <div className="flex flex-col justify-center items-center">
-          <h2 className="font-bold font-serif text-3xl text-white">Profile</h2>
+          <h2 className="font-bold font-serif text-3xl text-violet-400">
+            Profile
+          </h2>
           <Image
             src={BurmeseCat}
             className="w-32 h-32 rounded-full m-4"
             alt="img"
           />
-          <h2 className="font-bold font-serif text-3xl text-white">
+          <h2 className="font-bold font-serif text-3xl text-violet-400">
             {user?.name}
           </h2>
-          <p className="text-xl text-muted-foreground font-serif">
+          <p className="text-xl font-serif text-violet-400 opacity-60">
             {user?.email}
           </p>
         </div>
         <div className="flex justify-center items-center mt-4">
           <Sheet>
             <SheetTrigger asChild>
-              <Button className="p-2 " variant="outline">
+              <Button
+                className="p-2 text-violet-400 cursor-pointer"
+                variant="outline"
+              >
                 Edit Profile
                 <UserRoundPen />
               </Button>
@@ -105,16 +111,52 @@ const Profile = () => {
                 </SheetTitle>
               </SheetHeader>
               <div className="flex flex-col justify-center items-center">
-                <div className="">
+                <div className="flex justify-center items-center relative">
                   <Image
-                    src={BurmeseCat}
-                    alt="Image"
-                    className="w-32 h-32 rounded-full m-4"
+                    src={imagePreview || BurmeseCat}
+                    alt="Profile Image"
+                    className="w-32 h-32 rounded-full m-4 object-cover"
+                    width={128}
+                    height={128}
+                  />
+                  <label
+                    htmlFor="profile-photo"
+                    className="absolute bottom-7 right-8 cursor-pointer bg-white p-1 rounded-full"
+                    title="Change photo"
+                  >
+                    <SquarePen />
+                  </label>
+                  <input
+                    id="profile-photo"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setImagePreview(reader.result as string);
+                        };
+                        reader.readAsDataURL(file);
+                        // You could also store the File object to upload later:
+                        // setSelectedImageFile(file);
+                      }
+                    }}
+                    className="hidden"
                   />
                 </div>
                 <div className="flex flex-col justify-center items-center">
                   <label className="text-center font-bold text-2xl">Name</label>
-                  <Input type="text" value={user?.name} />
+                  <Input
+                    type="text"
+                    onChange={(e) =>
+                      setUser((prev: any) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
+                    value={user?.name ?? ""}
+                  />
                 </div>
               </div>
               <SheetFooter>
@@ -128,7 +170,7 @@ const Profile = () => {
         <div className="flex justify-center items-center mt-4 text-white">
           <button
             onClick={handleLogout}
-            className="text-red-500 border border-red-500 p-2 rounded-md font-serif flex justify-center items-center gap-2"
+            className="text-red-500 cursor-pointer   border border-red-500 p-2 rounded-md font-serif flex justify-center items-center gap-2"
           >
             Logout
             <LogOut />

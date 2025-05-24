@@ -8,6 +8,14 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import dayjs from "dayjs";
+import Image from "next/image";
+import Health from "@/public/health.avif";
+import Breakfast from "@/public/breakfast.webp";
+import Lunch from "@/public/Lunch.avif";
+import Bill from "@/public/bill.avif";
+import Transport from "@/public/transport.avif";
+import Other from "@/public/other.avif";
+
 import {
   Popover,
   PopoverContent,
@@ -34,6 +42,7 @@ import axios from "axios";
 const Home = () => {
   type ExpenseItem = {
     id: number;
+    type: string;
     expense_category: string;
     description: string;
     amount: number;
@@ -49,6 +58,7 @@ const Home = () => {
   const [myIncome, setMyIncome] = useState([]);
   const [myExpense, setMyExpense] = useState([]);
   const [myBalance, setMyBalance] = useState([]);
+  const [user, setUser] = useState<any>(null);
 
   const handleTypeChange = (value: any) => {
     setType(value);
@@ -68,6 +78,11 @@ const Home = () => {
 
   const handleDesChange = (e: any) => {
     setDesc(e.target.value);
+  };
+
+  const imageList = {
+    id: 1,
+    image: 1,
   };
 
   const myExpenseCategory = [
@@ -161,6 +176,26 @@ const Home = () => {
       } catch (error) {
         console.error("Error fetching expenses:", error);
       }
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          console.error("No access token found");
+          return;
+        }
+
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/user`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching expenses:", error);
+      }
     };
 
     fetchExpenses();
@@ -203,8 +238,12 @@ const Home = () => {
   return (
     <div className="mx-auto pt-8 bg-[#10002b] min-h-screen">
       <div className="">
-        <h2 className="font-serif text-xl opacity-70 text-white">Hello,</h2>
-        <h1 className="font-serif font-bold text-2xl pb-4 text-white">Hein</h1>
+        <h2 className="font-serif text-xl opacity-70 text-violet-400">
+          Hello,
+        </h2>
+        <h1 className="font-serif font-bold text-2xl pb-4 text-violet-400">
+          {user?.name}
+        </h1>
         <div className="rounded-2xl p-4 shadow-md pb-4 bg-[#f8fdfc]">
           <div className="pb-4">
             <h3 className="font-serif">Total Balance</h3>
@@ -212,29 +251,35 @@ const Home = () => {
           </div>
           <div className="grid grid-cols-2">
             <div className="col-span-1">
-              <div className="flex justify-start items-center gap-2">
-                <div className="bg-gray-200 rounded-full">
-                  <ArrowBigUp />
+              <div className="flex flex-col justify-start items-start gap-2">
+                <div className="flex justify-center items-center">
+                  <ArrowBigUp className="bg-gray-200 rounded-full " />
+                  <span className="font-serif">Income</span>
                 </div>
-                <span className="font-serif">Income</span>
+                <div className="ml-4">
+                  <p className="text-green-500 font-serif text-center">
+                    $ {myIncome}
+                  </p>
+                </div>
               </div>
-              <p className="text-green-500 font-serif">$ {myIncome}</p>
             </div>
             <div className="col-span-1">
-              <div className="flex justify-end items-center gap-2">
-                <div className="bg-gray-200 rounded-full">
-                  <ArrowBigDown />
+              <div className="flex flex-col justify-end items-end gap-2">
+                <div className="flex justify-center items-center">
+                  <ArrowBigDown className="bg-gray-200 rounded-full " />
+                  <span className="font-serif">Expense</span>
                 </div>
-                <span className="font-serif">Expense</span>
+                <div className="mr-4">
+                  <p className="text-red-500 font-serif text-center">
+                    $ {myExpense}
+                  </p>
+                </div>
               </div>
-              <p className="text-[#e01e37] text-end font-serif">
-                $ {myExpense}
-              </p>
             </div>
           </div>
         </div>
         <div>
-          <h2 className="font-serif font-bold text-2xl py-4 text-white">
+          <h2 className="font-serif font-bold text-2xl py-4 text-violet-400">
             Recent Transactions
           </h2>
           <div className="space-y-4">
@@ -245,16 +290,101 @@ const Home = () => {
               >
                 <div className="col-span-3 p-2">
                   <div className="flex justify-start gap-2 items-center">
-                    <div className="">Image</div>
+                    <div className="">
+                      {item.expense_category === "Health" && (
+                        <div>
+                          <Image
+                            src={Health}
+                            width={30}
+                            height={30}
+                            alt="Health icon"
+                          />
+                        </div>
+                      )}
+                      {item.expense_category === "Transport" && (
+                        <div>
+                          <Image
+                            src={Transport}
+                            width={30}
+                            height={30}
+                            alt="Other icon"
+                          />
+                        </div>
+                      )}
+                      {item.expense_category === "Breakfast" && (
+                        <div>
+                          <Image
+                            src={Breakfast}
+                            width={30}
+                            height={30}
+                            alt="Other icon"
+                          />
+                        </div>
+                      )}
+                      {item.expense_category === "Lunch" && (
+                        <div>
+                          <Image
+                            src={Lunch}
+                            width={30}
+                            height={30}
+                            alt="Other icon"
+                          />
+                        </div>
+                      )}
+                      {item.expense_category === "Dinner" && (
+                        <div>
+                          <Image
+                            src={Lunch}
+                            width={30}
+                            height={30}
+                            alt="Other icon"
+                          />
+                        </div>
+                      )}
+                      {item.expense_category === "Electric Bill" && (
+                        <div>
+                          <Image
+                            width={30}
+                            height={30}
+                            src={Bill}
+                            alt="Bill icon"
+                          />
+                        </div>
+                      )}
+                      {item.expense_category === "Water Bill" && (
+                        <div>
+                          <Image
+                            width={30}
+                            height={30}
+                            src={Bill}
+                            alt="Bill icon"
+                          />
+                        </div>
+                      )}
+                      {item.expense_category === "Other" && (
+                        <div>
+                          <Image
+                            src={Other}
+                            width={30}
+                            height={30}
+                            alt="Other icon"
+                          />
+                        </div>
+                      )}
+                    </div>
                     <div className=" flex flex-col justify-start items-center">
-                      <h3>{item.expense_category}</h3>
+                      <h3 className="">{item.expense_category}</h3>
                       <p>{item.description}</p>
                     </div>
                   </div>
                 </div>
                 <div className="col-span-1 p-2">
                   <div className="flex flex-col justify-end items-center text-center">
-                    <div>${item.amount}</div>
+                    <div>
+                      {item.type === "Income"
+                        ? `$${item.amount}`
+                        : `-$${item.amount}`}
+                    </div>
                     <div>{dayjs(item.date).format("DD MMM")}</div>
                   </div>
                 </div>
