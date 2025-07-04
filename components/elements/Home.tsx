@@ -141,11 +141,16 @@ const Home = () => {
     },
     {
       id: 3,
+      name: "Online Sales",
+      value: "Online Sales",
+    },
+    {
+      id: 4,
       name: "Over Time",
       value: "Over Time",
     },
     {
-      id: 4,
+      id: 5,
       name: "Other",
       value: "Other",
     },
